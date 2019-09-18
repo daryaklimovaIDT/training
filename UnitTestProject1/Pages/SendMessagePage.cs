@@ -2,13 +2,12 @@
 using OpenQA.Selenium.Support.PageObjects;
 using System;
 using System.Text;
+using UnitTestProject1;
 
 namespace UnitTestsMail.Pages
 {
-    public class SendMessagePage
+    public class SendMessagePage : BasePage
     {
-        private IWebDriver _driver;
-
         [FindsBy(How = How.XPath, Using = "//textarea[@data-original-name='To']")]
         private IWebElement ToWhomField { get; set; }
 
@@ -18,7 +17,7 @@ namespace UnitTestsMail.Pages
         [FindsBy(How = How.XPath, Using = "//body[@id='tinymce']")]
         private IWebElement MessageTextField { get; set; }
 
-        [FindsBy(How = How.XPath, Using = "//*[@id=\"b-toolbar__right\"]/div[3]/div/div[2]/div[1]/div/span")]
+        [FindsBy(How = How.XPath, Using = "//div[@class='b-sticky']//span[text()='Отправить']")]
         private IWebElement SendButton { get; set; }
 
         [FindsBy(How = How.XPath, Using = "//iframe[contains(@id,'composeEditor_ifr')]")]
@@ -27,10 +26,9 @@ namespace UnitTestsMail.Pages
         [FindsBy(How = How.ClassName, Using = "message-sent__title")]
         private IWebElement MessageSentMessage { get; set; }
 
-        public SendMessagePage(IWebDriver driver)
+        public SendMessagePage()
         {
-            this._driver = driver;
-            PageFactory.InitElements(_driver, this);
+            PageFactory.InitElements(WebDriverUtil.GetInstance(), this);
         }
 
         public void EnterRecipients(string recipients)
@@ -39,30 +37,30 @@ namespace UnitTestsMail.Pages
             {
                 char letter = recipients[i];
                 string stringLetter = new StringBuilder().Append(letter).ToString();
-                ToWhomField.SendKeys(stringLetter);
+                SendText(ToWhomField, stringLetter);
             }
         }
 
         public void EnterTheme(string themeText)
         {
-            ThemeField.SendKeys(themeText);
+            SendText(ThemeField, themeText);
         }
 
         public void EnterMessageText(string messageText)
         {
-            _driver.SwitchTo().Frame(0);
-            MessageTextField.SendKeys(messageText);
-            _driver.SwitchTo().DefaultContent();
+            WebDriverUtil.GetInstance().SwitchTo().Frame(0);
+            SendText(MessageTextField, messageText);
+            WebDriverUtil.GetInstance().SwitchTo().DefaultContent();
         }
 
         public void SendButtonClick()
         {
-            SendButton.Click();
+            Click(SendButton);
         }
 
         public bool MessageIsSent()
         {
-            _driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
+            WebDriverWaitUtil.WaitForElementToBeVisible(By.ClassName("message-sent__title"));
             return MessageSentMessage.Displayed;
         }
     }

@@ -1,5 +1,6 @@
 ﻿
 using NUnit.Framework;
+using UnitTestProject1;
 using UnitTestsMail.Pages;
 
 namespace UnitTestsMail
@@ -9,16 +10,17 @@ namespace UnitTestsMail
     {
         private MessagePage messagePage;
         private SendMessagePage sendMessagePage;
+        private LoginPage loginPage;
 
         [SetUp]
         public override void SetUp()
         {
             base.SetUp();
-            loginPage = new LoginPage(_driver);
-            _driver.Navigate().GoToUrl("https://mail.ru/");
+            loginPage = new LoginPage();
+            WebDriverUtil.GetInstance().Navigate().GoToUrl("https://mail.ru/");
             loginPage.LogIn("user.test.2000", "us20002000");
             messagePage = loginPage.ClickEnterButton();
-            messagePage.WaitForPageToLoad();
+            WebDriverWaitUtil.WaitForPageToLoad("Входящие");
             Assert.IsTrue(loginPage.IsLogoutDisplayed(), "Logout button was not displayed.");
         }
 
@@ -29,9 +31,9 @@ namespace UnitTestsMail
             messagePage.ChooseFirstMessage();
             messagePage.СlickSpamButton();
             messagePage.ClickApproveSpamButton();
-            _driver.Navigate().Refresh();
+            WebDriverUtil.GetInstance().Navigate().Refresh();
             messagePage.ClickSpamField();
-            _driver.Navigate().Refresh();
+            WebDriverUtil.GetInstance().Navigate().Refresh();
             // move from spam
             messagePage.ChooseFirstMessage();
             messagePage.СlickSpamButton();

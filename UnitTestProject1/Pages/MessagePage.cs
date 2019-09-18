@@ -3,17 +3,16 @@ using OpenQA.Selenium.Support.PageObjects;
 using OpenQA.Selenium.Support.UI;
 using System;
 using System.Collections.Generic;
+using UnitTestProject1;
 
 namespace UnitTestsMail.Pages
 {
-    public class MessagePage
+    public class MessagePage : BasePage
     {
-        private IWebDriver _driver;
-
         [FindsBy(How = How.XPath, Using = "//div[@class='js-item-checkbox b-datalist__item__cbx']")]
         private IList<IWebElement> MessagesChekBoxes { get; set; }
 
-        [FindsBy(How = How.XPath, Using = "//*[@id=\"b-toolbar__right\"]/div[2]/div/div[2]/div[3]/div")]
+        [FindsBy(How = How.XPath, Using = "//div[@class='b-sticky']//span[contains(text(), 'пам')]")]
         private IWebElement SpamButton { get; set; }
 
         [FindsBy(How = How.XPath, Using = "//button[@data-id='approve']")]
@@ -22,45 +21,38 @@ namespace UnitTestsMail.Pages
         [FindsBy(How = How.XPath, Using = "//div[@data-id='950']")]
         private IWebElement SpamField { get; set; }
 
-        [FindsBy(How = How.XPath, Using = "//*[@id=\"b-toolbar__left\"]/div/div/div[2]/div/a/span")]
+        [FindsBy(How = How.XPath, Using = "//div[@class='b-sticky']//a[@data-bem='b-toolbar__btn']")]
         private IWebElement CreateMessageButton { get; set; }
 
         [FindsBy(How = How.XPath, Using = "//div[@data-bem='b-flag']")]
         private IList<IWebElement> MessagesFlags { get; set; }
 
-
-        public MessagePage(IWebDriver driver)
+        public MessagePage()
         {
-            this._driver = driver;
-            PageFactory.InitElements(driver, this);
-        }
-
-        public void WaitForPageToLoad()
-        {
-            new WebDriverWait(_driver, TimeSpan.FromSeconds(5)).Until(ExpectedConditions.TitleContains("Входящие"));
+            PageFactory.InitElements(WebDriverUtil.GetInstance(), this);
         }
 
         public void ChooseFirstMessage()
         {
-            _driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
-            MessagesChekBoxes[0].Click();
+            WebDriverWaitUtil.WaitForElementToBeClickable(MessagesChekBoxes[0]);
+            Click(MessagesChekBoxes[0]);
         }
 
         public void СlickSpamButton()
         {
-            SpamButton.Click();
+            Click(SpamButton);
         }
 
         public void ClickApproveSpamButton()
         {
-            _driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
-            ApproveSpamButton.Click();
+            WebDriverWaitUtil.WaitForElementToBeClickable(ApproveSpamButton);
+            Click(ApproveSpamButton);
         }
 
         public void ClickSpamField()
         {
-            _driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
-            SpamField.Click();
+            WebDriverWaitUtil.WaitForElementToBeClickable(SpamField);
+            Click(SpamField);
         }
 
 
@@ -71,15 +63,15 @@ namespace UnitTestsMail.Pages
 
         public SendMessagePage ClickCreateMessageButton()
         {
-            CreateMessageButton.Click();
-            return new SendMessagePage(_driver);
+            Click(CreateMessageButton);
+            return new SendMessagePage();
         }
 
         public void ChooseSeveralMessagesFlags()
         {
-            MessagesFlags[0].Click();
-            MessagesFlags[1].Click();
-            MessagesFlags[2].Click();
+            Click(MessagesFlags[0]);
+            Click(MessagesFlags[1]);
+            Click(MessagesFlags[2]);
         }
 
     }

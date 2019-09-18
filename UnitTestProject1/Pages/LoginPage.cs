@@ -1,14 +1,14 @@
 ﻿using Mono.CSharp;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.PageObjects;
+using OpenQA.Selenium.Support.UI;
 using System;
+using UnitTestProject1;
 
 namespace UnitTestsMail.Pages
 {
-    public class LoginPage
+    public class LoginPage : BasePage
     {
-        private IWebDriver _driver;
-
         [FindsBy(How = How.Id, Using = "mailbox:login")]
         private IWebElement LoginField { get; set; }
 
@@ -21,30 +21,29 @@ namespace UnitTestsMail.Pages
         [FindsBy(How = How.XPath, Using = "//a[@id='PH_logoutLink']")]
         private IWebElement LogoutLink { get; set; }
 
-        public LoginPage(IWebDriver driver)
+        public LoginPage()
         {
-            this._driver = driver;
-            PageFactory.InitElements(driver, this);
+            PageFactory.InitElements(WebDriverUtil.GetInstance(), this);
         }
 
         public void LogIn(string login, string password)
         {
-            LoginField.Clear();
-            LoginField.SendKeys(login);
-            EnterButton.Click();
-            _driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
-            PasswordField.SendKeys(password);
+            Clear(LoginField);
+            SendText(LoginField, login);
+            Click(EnterButton);
+            WebDriverWaitUtil.WaitForElementToBeVisible(By.Id("mailbox:password"));
+            SendText(PasswordField, password);
         }
 
         public MessagePage ClickEnterButton()
         {
-            EnterButton.Click();
-            return new MessagePage(_driver);
+            Click(EnterButton);
+            return new MessagePage();
         }
 
         public bool IsLogoutDisplayed()
         {
-            _driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
+            WebDriverWaitUtil.WaitForElementToBeVisible(By.Id("PH_logoutLink"));
             return LogoutLink.Displayed;
         }
     }
