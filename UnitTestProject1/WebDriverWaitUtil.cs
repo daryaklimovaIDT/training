@@ -9,21 +9,31 @@ using UnitTestsMail;
 
 namespace UnitTestProject1
 {
-    public class WebDriverWaitUtil
+    public static class WebDriverWaitUtil
     {
-        public static void WaitForElementToBeVisible(By locator)
+        public static void WaitForElementToBeVisible(this IWebElement element, int timeOut = 5)
         {
-            new WebDriverWait(WebDriverUtil.GetInstance(), TimeSpan.FromSeconds(5)).Until(ExpectedConditions.ElementIsVisible(locator));
+            new WebDriverWait(WebDriverUtil.GetInstance(), TimeSpan.FromSeconds(timeOut)).Until(ElementIsVisible(element));
         }
 
-        public static void WaitForElementToBeClickable(IWebElement element)
+        public static void WaitForElementToBeClickable(this IWebElement element, int timeOut = 5)
         {
-            new WebDriverWait(WebDriverUtil.GetInstance(), TimeSpan.FromSeconds(5)).Until(ExpectedConditions.ElementToBeClickable(element));
+            new WebDriverWait(WebDriverUtil.GetInstance(), TimeSpan.FromSeconds(timeOut)).Until(ExpectedConditions.ElementToBeClickable(element));
         }
 
-        public static void WaitForPageToLoad(string titleText)
+        private static Func<IWebDriver, bool> ElementIsVisible(IWebElement element)
         {
-            new WebDriverWait(WebDriverUtil.GetInstance(), TimeSpan.FromSeconds(5)).Until(ExpectedConditions.TitleContains(titleText));
+            return driver=>
+            {
+                try
+                {
+                    return element.Displayed;                    
+                }
+                catch (Exception)
+                {
+                    return false;
+                }
+            };
         }
     }
 }

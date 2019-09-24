@@ -1,4 +1,5 @@
-﻿using OpenQA.Selenium;
+﻿using NUnit.Framework;
+using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using System;
 using System.Collections.Generic;
@@ -8,19 +9,13 @@ using System.Threading.Tasks;
 
 namespace UnitTestsMail.Pages
 {
-    public class BasePage
+    public abstract class BasePage 
     {
-        protected void Click(IWebElement element)
+        public abstract bool IsPageLoaded();
+
+        public void AssertPageIsLoaded()
         {
-            element.Click();
-        }
-        protected void Clear(IWebElement element)
-        {
-            element.Clear();
-        }
-        protected void SendText(IWebElement element, string text)
-        {
-            element.SendKeys(text);
+            Assert.IsTrue(IsPageLoaded());
         }
     }
 }

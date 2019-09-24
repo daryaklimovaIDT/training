@@ -26,6 +26,21 @@ namespace UnitTestsMail
             return instance;
         }
 
+        public static void Refresh()
+        {
+            WebDriverUtil.GetInstance().Navigate().Refresh();
+        }
+
+        public static void SwtichToFrame(int i)
+        {
+            WebDriverUtil.GetInstance().SwitchTo().Frame(i);
+        }
+
+        public static void SwtichToDefaultContent()
+        {
+            WebDriverUtil.GetInstance().SwitchTo().DefaultContent();
+        }
+
         public static void DisposeDriver()
         {
             instance.Quit();

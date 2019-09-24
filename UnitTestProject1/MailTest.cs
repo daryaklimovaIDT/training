@@ -1,6 +1,11 @@
 ﻿
 using NUnit.Framework;
+using System.Collections.Generic;
+using System.Linq;
 using UnitTestProject1;
+using UnitTestProject1.Temp;
+using UnitTestProject1.Utils;
+using UnitTestsMail.Entities;
 using UnitTestsMail.Pages;
 
 namespace UnitTestsMail
@@ -16,45 +21,61 @@ namespace UnitTestsMail
         public override void SetUp()
         {
             base.SetUp();
+            User user = EntitiesManager.GetUser();
             loginPage = new LoginPage();
-            WebDriverUtil.GetInstance().Navigate().GoToUrl("https://mail.ru/");
-            loginPage.LogIn("user.test.2000", "us20002000");
+            WebDriverUtil.GetInstance().Navigate().GoToUrl(Config.URL);
+            loginPage.AssertPageIsLoaded();
+            loginPage.LogIn(user.Login, user.Password);
             messagePage = loginPage.ClickEnterButton();
-            WebDriverWaitUtil.WaitForPageToLoad("Входящие");
+            messagePage.AssertPageIsLoaded();
             Assert.IsTrue(loginPage.IsLogoutDisplayed(), "Logout button was not displayed.");
         }
 
         [Test]
-        public void TestMoveToSpamAndBack()
+        public void TestMoveToSpam()
         {
-            // move to spam
-            messagePage.ChooseFirstMessage();
-            messagePage.СlickSpamButton();
-            messagePage.ClickApproveSpamButton();
-            WebDriverUtil.GetInstance().Navigate().Refresh();
-            messagePage.ClickSpamField();
-            WebDriverUtil.GetInstance().Navigate().Refresh();
-            // move from spam
-            messagePage.ChooseFirstMessage();
-            messagePage.СlickSpamButton();
+            List<string> messages = messagePage.GetMessages();
+            string expectedSpamSubject = messages[0];
+            messagePage.MoveMessageToSpam(0);
+            WebDriverUtil.Refresh();
+            messagePage.NavigateToSpamFolder();
+            List<string> spamMessages = messagePage.GetMessages();
+            Assert.IsTrue(spamMessages.Any(actualSpamMessage => expectedSpamSubject.Contains(actualSpamMessage)), "The message is not in spam");
         }
 
         [Test]
-        public void TestFlagAndUnflag()
+        public void TestFlagMessage()
         {
-            messagePage.ChooseSeveralMessagesFlags();
-            messagePage.ChooseSeveralMessagesFlags();
+            List<string> messages = messagePage.GetMessages();
+            string expectedFlagSubject = messages[0];
+            messagePage.FlagMessage(0);
+            WebDriverUtil.Refresh();
+            messagePage.СlickFlagIcon();
+            List<string> flagMessages = messagePage.GetFlaggedMessages();
+            Assert.IsTrue(flagMessages.Any(actualFlagMessage => expectedFlagSubject.Contains(actualFlagMessage)), "Message was not in the list");
+            messagePage.FlagMessage(0);
+            WebDriverUtil.Refresh();
+            List<string> updatedFlagMessages = messagePage.GetFlaggedMessages();
+            Assert.IsFalse(updatedFlagMessages.Any(actualFlagMessage => expectedFlagSubject.Contains(actualFlagMessage)), "Message is in the list");
+
         }
 
         [Test]
         public void TestSentMessageSeveralUsers()
         {
+            List<Recipient> recipients = EntitiesManager.GetRecipients();
             sendMessagePage = messagePage.ClickCreateMessageButton();
-            sendMessagePage.EnterRecipients("user.test.2000@mail.ru dasha.7777777@mail.ru");
-            sendMessagePage.EnterTheme("111");
-            sendMessagePage.EnterMessageText("Hi");
+            sendMessagePage.AssertPageIsLoaded();
+            sendMessagePage.EnterRecipients(recipients);
+            string expectedSubject = StringUtils.GenerateAlphanumericString(10);
+            sendMessagePage.EnterSubject(expectedSubject);
+            sendMessagePage.EnterMessage(StringUtils.GenerateAlphabeticalString(20));
             sendMessagePage.SendButtonClick();
-            Assert.IsTrue(sendMessagePage.MessageIsSent(), "Logout button was not displayed.");
+            Assert.IsTrue(sendMessagePage.CheckMessageIsSent(), "Message sent notification was not displayed.");
+            sendMessagePage.SentMessagesButtonClick();
+            WebDriverUtil.Refresh();
+            List<string> subjects = sendMessagePage.GetSubjects();
+            Assert.IsTrue(subjects.Any(subject => subject.Contains(expectedSubject)), "Subject was not in the list");
         }
 
         [TearDown]

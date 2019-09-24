@@ -1,25 +1,30 @@
-﻿using OpenQA.Selenium;
+﻿using NUnit.Framework;
+using OpenQA.Selenium;
 using OpenQA.Selenium.Support.PageObjects;
 using OpenQA.Selenium.Support.UI;
 using System;
 using System.Collections.Generic;
 using UnitTestProject1;
 
+using UnitTestProject1.Utils;
 namespace UnitTestsMail.Pages
 {
     public class MessagePage : BasePage
     {
+        [FindsBy(How = How.XPath, Using = "//div[contains(@class,'b-nav_folders')]//a[@href='/messages/inbox/']")]
+        private IWebElement InboxButton { get; set; }
+
         [FindsBy(How = How.XPath, Using = "//div[@class='js-item-checkbox b-datalist__item__cbx']")]
-        private IList<IWebElement> MessagesChekBoxes { get; set; }
+        private IList<IWebElement> MessagesCheckboxes { get; set; }
 
         [FindsBy(How = How.XPath, Using = "//div[@class='b-sticky']//span[contains(text(), 'пам')]")]
-        private IWebElement SpamButton { get; set; }
+        private IWebElement MoveToSpamButton { get; set; }
 
         [FindsBy(How = How.XPath, Using = "//button[@data-id='approve']")]
         private IWebElement ApproveSpamButton { get; set; }
 
         [FindsBy(How = How.XPath, Using = "//div[@data-id='950']")]
-        private IWebElement SpamField { get; set; }
+        private IWebElement SpamFolderButton { get; set; }
 
         [FindsBy(How = How.XPath, Using = "//div[@class='b-sticky']//a[@data-bem='b-toolbar__btn']")]
         private IWebElement CreateMessageButton { get; set; }
@@ -27,52 +32,100 @@ namespace UnitTestsMail.Pages
         [FindsBy(How = How.XPath, Using = "//div[@data-bem='b-flag']")]
         private IList<IWebElement> MessagesFlags { get; set; }
 
+        [FindsBy(How = How.XPath, Using = "//div[contains(@class,'b-datalist_letters_from')]//div[@class='b-datalist__item__subj']")]
+        private IList<IWebElement> MessagesSubjects { get; set; }
+
+        [FindsBy(How = How.XPath, Using = "//a[@data-mnemo='flagged']")]
+        private IWebElement FlagsIcon { get; set; }
+
+        [FindsBy(How = How.XPath, Using = "//div[contains(@class,'b-datalist__item')]//div[@class='b-datalist__item__subj']")]
+        private IList<IWebElement> FlagMessagesSubjects { get; set; }
+
+
         public MessagePage()
         {
             PageFactory.InitElements(WebDriverUtil.GetInstance(), this);
         }
 
-        public void ChooseFirstMessage()
+        public void CheckMessage(int index)
         {
-            WebDriverWaitUtil.WaitForElementToBeClickable(MessagesChekBoxes[0]);
-            Click(MessagesChekBoxes[0]);
+            MessagesCheckboxes[index].WaitForElementToBeClickable();
+            MessagesCheckboxes[index].ClickElement(); ;
         }
 
         public void СlickSpamButton()
         {
-            Click(SpamButton);
+            MoveToSpamButton.ClickElement();
         }
 
         public void ClickApproveSpamButton()
         {
-            WebDriverWaitUtil.WaitForElementToBeClickable(ApproveSpamButton);
-            Click(ApproveSpamButton);
+            ApproveSpamButton.WaitForElementToBeClickable();
+            ApproveSpamButton.ClickElement();
         }
 
-        public void ClickSpamField()
+        public void MoveMessageToSpam(int index)
         {
-            WebDriverWaitUtil.WaitForElementToBeClickable(SpamField);
-            Click(SpamField);
+            CheckMessage(index);
+            СlickSpamButton();
+            ClickApproveSpamButton();
+        }
+
+        public void NavigateToSpamFolder()
+        {
+            SpamFolderButton.WaitForElementToBeClickable();
+            SpamFolderButton.ClickElement();
         }
 
 
         public bool IsMessageListEmty()
         {
-            return MessagesChekBoxes.Count == 0;
+            return MessagesCheckboxes.Count == 0;
         }
 
         public SendMessagePage ClickCreateMessageButton()
         {
-            Click(CreateMessageButton);
+            CreateMessageButton.ClickElement();
             return new SendMessagePage();
         }
 
-        public void ChooseSeveralMessagesFlags()
+        public void FlagMessage(int index)
         {
-            Click(MessagesFlags[0]);
-            Click(MessagesFlags[1]);
-            Click(MessagesFlags[2]);
+            MessagesFlags[index].ClickElement();
         }
 
+        public void СlickFlagIcon()
+        {
+            FlagsIcon.ClickElement();
+        }
+
+
+
+        public override bool IsPageLoaded()
+        {
+            return InboxButton.IsElementDisplayed();
+        }
+
+        public List<string> GetMessages()
+        {
+            List<string> messages = new List<string>();
+            foreach (IWebElement message in MessagesSubjects)
+            {
+                string subjectText = message.Text;
+                messages.Add(subjectText);
+            }
+            return messages;
+        }
+
+        public List<string> GetFlaggedMessages()
+        {
+            List<string> messages = new List<string>();
+            foreach (IWebElement message in FlagMessagesSubjects)
+            {
+                string subjectText = message.Text;
+                messages.Add(subjectText);
+            }
+            return messages;
+        }
     }
 }

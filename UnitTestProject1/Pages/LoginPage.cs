@@ -4,6 +4,7 @@ using OpenQA.Selenium.Support.PageObjects;
 using OpenQA.Selenium.Support.UI;
 using System;
 using UnitTestProject1;
+using UnitTestProject1.Utils;
 
 namespace UnitTestsMail.Pages
 {
@@ -28,23 +29,27 @@ namespace UnitTestsMail.Pages
 
         public void LogIn(string login, string password)
         {
-            Clear(LoginField);
-            SendText(LoginField, login);
-            Click(EnterButton);
-            WebDriverWaitUtil.WaitForElementToBeVisible(By.Id("mailbox:password"));
-            SendText(PasswordField, password);
+            LoginField.ClearAndSendText(login);
+            EnterButton.ClickElement();
+            WebDriverWaitUtil.WaitForElementToBeVisible(PasswordField);
+            PasswordField.ClearAndSendText(password);
         }
 
         public MessagePage ClickEnterButton()
         {
-            Click(EnterButton);
+            EnterButton.ClickElement();
             return new MessagePage();
         }
 
         public bool IsLogoutDisplayed()
         {
-            WebDriverWaitUtil.WaitForElementToBeVisible(By.Id("PH_logoutLink"));
+            WebDriverWaitUtil.WaitForElementToBeVisible(LogoutLink);
             return LogoutLink.Displayed;
+        }
+
+        public override bool IsPageLoaded()
+        {
+            return LoginField.IsElementDisplayed();
         }
     }
 }
