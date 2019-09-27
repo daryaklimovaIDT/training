@@ -25,7 +25,7 @@ namespace UnitTestsMail
             loginPage = new LoginPage();
             WebDriverUtil.GetInstance().Navigate().GoToUrl(Config.URL);
             loginPage.AssertPageIsLoaded();
-            loginPage.LogIn(user.Login, user.Password);
+            loginPage.LogIn(user.Login, user.Password); 
             messagePage = loginPage.ClickEnterButton();
             messagePage.AssertPageIsLoaded();
             Assert.IsTrue(loginPage.IsLogoutDisplayed(), "Logout button was not displayed.");
@@ -52,12 +52,11 @@ namespace UnitTestsMail
             WebDriverUtil.Refresh();
             messagePage.СlickFlagIcon();
             List<string> flagMessages = messagePage.GetFlaggedMessages();
-            Assert.IsTrue(flagMessages.Any(actualFlagMessage => expectedFlagSubject.Contains(actualFlagMessage)), "Message was not in the list");
+            Assert.IsTrue(flagMessages.Any(actualFlagMessage => expectedFlagSubject.Contains(actualFlagMessage)), $"Message '{expectedFlagSubject}' was not in the list");
             messagePage.FlagMessage(0);
             WebDriverUtil.Refresh();
             List<string> updatedFlagMessages = messagePage.GetFlaggedMessages();
             Assert.IsFalse(updatedFlagMessages.Any(actualFlagMessage => expectedFlagSubject.Contains(actualFlagMessage)), "Message is in the list");
-
         }
 
         [Test]
@@ -76,12 +75,6 @@ namespace UnitTestsMail
             WebDriverUtil.Refresh();
             List<string> subjects = sendMessagePage.GetSubjects();
             Assert.IsTrue(subjects.Any(subject => subject.Contains(expectedSubject)), "Subject was not in the list");
-        }
-
-        [TearDown]
-        public override void TearDown()
-        {
-            base.TearDown();
         }
     }
 }

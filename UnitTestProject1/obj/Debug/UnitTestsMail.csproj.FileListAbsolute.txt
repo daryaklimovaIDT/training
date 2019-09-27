@@ -1,4 +1,5 @@
-D:\Projects\ConsoleApp\UnitTestProject1\bin\Debug\TechTalk.SpecFlow.NUnit.SpecFlowPlugin.dll
+D:\Projects\ConsoleApp\UnitTestProject1\obj\Debug\UnitTestsMail.csprojAssemblyReference.cache
+D:\Projects\ConsoleApp\UnitTestProject1\obj\Debug\UnitTestsMail.csproj.CoreCompileInputs.cache
 D:\Projects\ConsoleApp\UnitTestProject1\bin\Debug\NUnit3.TestAdapter.dll
 D:\Projects\ConsoleApp\UnitTestProject1\bin\Debug\NUnit3.TestAdapter.pdb
 D:\Projects\ConsoleApp\UnitTestProject1\bin\Debug\nunit.engine.dll
@@ -6,6 +7,7 @@ D:\Projects\ConsoleApp\UnitTestProject1\bin\Debug\nunit.engine.api.dll
 D:\Projects\ConsoleApp\UnitTestProject1\bin\Debug\Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.dll
 D:\Projects\ConsoleApp\UnitTestProject1\bin\Debug\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.Interface.dll
 D:\Projects\ConsoleApp\UnitTestProject1\bin\Debug\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.dll
+D:\Projects\ConsoleApp\UnitTestProject1\bin\Debug\UnitTestProject1.dll.config
 D:\Projects\ConsoleApp\UnitTestProject1\bin\Debug\UnitTestProject1.dll
 D:\Projects\ConsoleApp\UnitTestProject1\bin\Debug\UnitTestProject1.pdb
 D:\Projects\ConsoleApp\UnitTestProject1\bin\Debug\BoDi.dll
@@ -20,6 +22,7 @@ D:\Projects\ConsoleApp\UnitTestProject1\bin\Debug\Mono.Cecil.dll
 D:\Projects\ConsoleApp\UnitTestProject1\bin\Debug\Mono.Cecil.Mdb.dll
 D:\Projects\ConsoleApp\UnitTestProject1\bin\Debug\Mono.Cecil.Pdb.dll
 D:\Projects\ConsoleApp\UnitTestProject1\bin\Debug\Mono.Cecil.Rocks.dll
+D:\Projects\ConsoleApp\UnitTestProject1\bin\Debug\Newtonsoft.Json.dll
 D:\Projects\ConsoleApp\UnitTestProject1\bin\Debug\nunit.framework.dll
 D:\Projects\ConsoleApp\UnitTestProject1\bin\Debug\System.Threading.Tasks.Extensions.dll
 D:\Projects\ConsoleApp\UnitTestProject1\bin\Debug\System.ValueTuple.dll
@@ -35,18 +38,15 @@ D:\Projects\ConsoleApp\UnitTestProject1\bin\Debug\ICSharpCode.NRefactory.CSharp.
 D:\Projects\ConsoleApp\UnitTestProject1\bin\Debug\ICSharpCode.NRefactory.Xml.xml
 D:\Projects\ConsoleApp\UnitTestProject1\bin\Debug\Microsoft.VisualStudio.TestPlatform.TestFramework.xml
 D:\Projects\ConsoleApp\UnitTestProject1\bin\Debug\Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.xml
+D:\Projects\ConsoleApp\UnitTestProject1\bin\Debug\Newtonsoft.Json.xml
 D:\Projects\ConsoleApp\UnitTestProject1\bin\Debug\nunit.framework.pdb
 D:\Projects\ConsoleApp\UnitTestProject1\bin\Debug\nunit.framework.xml
 D:\Projects\ConsoleApp\UnitTestProject1\bin\Debug\System.Threading.Tasks.Extensions.xml
 D:\Projects\ConsoleApp\UnitTestProject1\bin\Debug\System.ValueTuple.xml
-D:\Projects\ConsoleApp\UnitTestProject1\bin\Debug\TechTalk.SpecFlow.pdb
-D:\Projects\ConsoleApp\UnitTestProject1\bin\Debug\TechTalk.SpecFlow.NUnit.SpecFlowPlugin.pdb
 D:\Projects\ConsoleApp\UnitTestProject1\bin\Debug\Utf8Json.xml
 D:\Projects\ConsoleApp\UnitTestProject1\bin\Debug\WatiN.Core.xml
 D:\Projects\ConsoleApp\UnitTestProject1\bin\Debug\WebDriver.xml
 D:\Projects\ConsoleApp\UnitTestProject1\bin\Debug\WebDriver.Support.xml
-D:\Projects\ConsoleApp\UnitTestProject1\obj\Debug\UnitTestsMail.csproj.CoreCompileInputs.cache
 D:\Projects\ConsoleApp\UnitTestProject1\obj\Debug\UnitTestsMail.csproj.CopyComplete
 D:\Projects\ConsoleApp\UnitTestProject1\obj\Debug\UnitTestProject1.dll
 D:\Projects\ConsoleApp\UnitTestProject1\obj\Debug\UnitTestProject1.pdb
-D:\Projects\ConsoleApp\UnitTestProject1\obj\Debug\UnitTestsMail.csprojAssemblyReference.cache

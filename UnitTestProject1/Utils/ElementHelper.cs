@@ -31,7 +31,7 @@ namespace UnitTestProject1.Utils
             {
                 WebDriverWaitUtil.WaitForElementToBeVisible(element);
             }
-            catch (NoSuchElementException)
+            catch (TimeoutException)
             {
                 return false;
             }

@@ -22,7 +22,7 @@ namespace UnitTestProject1.Utils
         public static List<Recipient> GetRecipients()
         {
             List<Recipient> recipients = new List<Recipient>();
-            foreach (string email in Config.emails)
+            foreach (string email in Config.Emails)
             {
                 Recipient recipient = new Recipient();
                 recipient.Email = email;

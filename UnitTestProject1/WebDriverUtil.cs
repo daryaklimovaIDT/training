@@ -12,11 +12,6 @@ namespace UnitTestsMail
     {
         private static IWebDriver instance;
 
-        private WebDriverUtil()
-        {
-
-        }
-
         public static IWebDriver GetInstance()
         {
             if (instance == null)
@@ -28,17 +23,17 @@ namespace UnitTestsMail
 
         public static void Refresh()
         {
-            WebDriverUtil.GetInstance().Navigate().Refresh();
+            instance.Navigate().Refresh();
         }
 
         public static void SwtichToFrame(int i)
         {
-            WebDriverUtil.GetInstance().SwitchTo().Frame(i);
+            instance.SwitchTo().Frame(i);
         }
 
         public static void SwtichToDefaultContent()
         {
-            WebDriverUtil.GetInstance().SwitchTo().DefaultContent();
+            instance.SwitchTo().DefaultContent();
         }
 
         public static void DisposeDriver()
